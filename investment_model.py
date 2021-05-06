@@ -2,6 +2,9 @@ import pandas as pd
 import streamlit as st
 import requests
 import numpy as np
+import yfinance as yf
+
+
 
 api_key = '3c6a61599dac605610c6c9dff5e0d742'
 api_key_input = st.sidebar.text_input('API key from financial modeling prep')
@@ -85,12 +88,17 @@ def topsis(ratios):
     relative_closeness = relative_closeness.sort_values(ascending=False)
     relative_closeness = relative_closeness.to_frame()
     relative_closeness.reset_index(level=0, inplace=True)
-    relative_closeness.rename(columns={0:'Score','index':'Company'},inplace=True)
+    relative_closeness.rename(columns={0:'Score','index':'Ticker'},inplace=True)
     return relative_closeness
 
-
+def get_name(ticker):
+    ticker = str(ticker)
+    name = yf.Ticker(ticker)
+    company_name = name.info['longName']
+    return company_name
 
 if st.button('Search'):
     relative_closeness = topsis(value_ratios)
+    relative_closeness['Company Name'] = relative_closeness.apply(lambda row: get_name(row.Ticker), axis = 1)
     st.table(relative_closeness)
 
