@@ -6,7 +6,7 @@ import yfinance as yf
 
 
 
-api_key = '3c6a61599dac605610c6c9dff5e0d742'
+api_key = '691f22bcf477a11d7dd3bd32d5d472d7'
 api_key_input = st.sidebar.text_input('API key from financial modeling prep')
 api_key_button = st.sidebar.button('Submit')
 if api_key_button:
@@ -49,7 +49,7 @@ value_ratios ={}
 count = 0
 for company in companies:
 	try:
-		if count <5:
+		if True:
 			count = count + 1
 			fin_ratios = requests.get(f'https://financialmodelingprep.com/api/v3/ratios-ttm/{company}?apikey={api_key}').json()
 			value_ratios[company] = {}
