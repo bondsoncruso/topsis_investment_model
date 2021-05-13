@@ -6,7 +6,7 @@ import yfinance as yf
 
 
 
-api_key = '691f22bcf477a11d7dd3bd32d5d472d7'
+api_key = 'a8577f27753e0a74d839eb179a9d3188'
 api_key_input = st.sidebar.text_input('API key from financial modeling prep')
 api_key_button = st.sidebar.button('Submit')
 if api_key_button:
@@ -37,7 +37,8 @@ url = (f'https://financialmodelingprep.com/api/v3/stock-screener?marketCapMoreTh
 
 #get companies based on criteria defined about
 screener = requests.get(url).json()
-
+if screener == {'Error Message': 'Limit Reach . Please upgrade your plan or visit our documentation for more details at https://financialmodelingprep.com/developer/docs/pricing '}:
+    st.warning('API limit reached please enter a new API key')
 
 #add selected companies to a list
 companies = []
@@ -49,7 +50,7 @@ value_ratios ={}
 count = 0
 for company in companies:
 	try:
-		if True:
+		if count<10:
 			count = count + 1
 			fin_ratios = requests.get(f'https://financialmodelingprep.com/api/v3/ratios-ttm/{company}?apikey={api_key}').json()
 			value_ratios[company] = {}
